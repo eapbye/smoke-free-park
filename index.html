@@ -44,12 +44,8 @@ h1{margin:0;font-size:1.5rem;line-height:1.25;letter-spacing:.5px;text-wrap:bala
 .tbtn.role b{margin-left:auto;font-weight:400;font-size:.8rem;opacity:.8}
 
 main{padding:14px max(16px, env(safe-area-inset-right)) 130px max(16px, env(safe-area-inset-left))}
-.intro{background:var(--card);border-radius:var(--r-lg);box-shadow:var(--lift);padding:14px 16px;font-size:.93rem;color:var(--ink-soft)}
-.intro ul{margin:6px 0 0;padding-left:1.2em;display:grid;gap:3px}
-.intro b{color:var(--ink)}
-.intro .pick{margin-top:12px;width:100%;min-height:48px;border:none;border-radius:var(--r);background:var(--pri);color:#fff;font-weight:700;font-size:1rem;cursor:pointer}
 
-.scene{margin:30px 0 10px;padding:10px 14px;background:var(--band);border-radius:var(--r);display:flex;align-items:baseline;gap:4px 10px;flex-wrap:wrap}
+.scene{margin:24px 0 10px;padding:10px 14px;background:var(--band);border-radius:var(--r);display:flex;align-items:baseline;gap:4px 10px;flex-wrap:wrap}
 .scene .no{font-size:.78rem;font-weight:700;color:var(--pri);letter-spacing:.08em;text-transform:uppercase}
 .scene h2{margin:0;font-size:1.08rem}
 .scene .zh{color:var(--ink-soft);font-size:.92rem}
@@ -127,6 +123,7 @@ body.open .scrim{display:block}
 .sizes button[aria-pressed="true"]{border:2px solid var(--pri);background:var(--pri-soft);color:var(--pri);font-weight:700}
 .toast{position:fixed;left:50%;bottom:100px;transform:translateX(-50%);background:var(--ink);color:#fff;padding:9px 16px;border-radius:999px;font-size:.88rem;z-index:20;opacity:0;pointer-events:none;transition:opacity .2s;max-width:90vw;text-align:center}
 .toast.show{opacity:1}
+#script > .scene:first-child{margin-top:4px}
 @media (prefers-reduced-motion: reduce){ .sheet,.cue,.toast{transition:none} }
 </style>
 </head>
@@ -149,16 +146,6 @@ body.open .scrim{display:block}
 
 <main>
   <div class="wrap">
-    <div class="intro">
-      <b>怎麼用</b>
-      <ul>
-        <li>點每句右邊的 <b>喇叭</b> 聽整句，再點一次停止。</li>
-        <li>點 <b>虛線底線</b> 的難字，看音標和中文。</li>
-        <li>上方 <b>中文</b> 可以在英文下面顯示翻譯。</li>
-        <li>排練時用最下方的 <b>◀ ▶</b> 一段一段往下走；想從中間開始，點那段右上角的「第 N 段」。</li>
-      </ul>
-      <button class="pick" id="introPick" type="button">選擇我的角色</button>
-    </div>
     <div id="script"></div>
     <p class="end">The End!</p>
   </div>
@@ -192,16 +179,16 @@ const ROLES = {
 const RAW = `
 # Scene 1 | A Beautiful Park | 美麗的公園
 ~ 白雪公主、小紅帽、灰姑娘在公園散步，大野狼偷偷走進來。
-N: Once upon a time, there was a beautiful park. = 很久很久以前，有一座美麗的公園。 | Everyone loved this park. = 大家都很喜歡這座公園。 | One day, three fairy tale friends came here. = 有一天，三位童話朋友來到這裡。 | But something unusual happened! = 但是，不尋常的事情發生了！
+N: Once upon a time, there was a beautiful park. = 很久很久以前，有一座美麗的公園。 | Everyone loved this park. = 大家都很喜歡這座公園。 | One day, three fairy-tale friends came here. = 有一天，三位童話朋友來到這裡。 | But something unusual happened! = 但是，不尋常的事情發生了！
 ~ 大野狼從口袋拿出香菸，做出抽菸動作。
-W: Ha! Ha! = 哈！哈！ | Nice day for a smoke! = 真是適合抽根菸的好天氣！
+W: Ha! Ha! = 哈！哈！ | What a nice day for a smoke! = 真是適合抽根菸的好天氣！
 SW: Oh, no! Mr. Wolf! = 噢，不！大野狼先生！ | Look at the sign! = 你看那個告示牌！ | No smoking here! = 這裡禁止吸菸！
 W: No smoking? = 禁止吸菸？ | But I am the Big Bad Wolf! = 但我可是大野狼耶！
 ~ 做出吹氣動作
 RR: Excuse me! = 不好意思！ | Your smoke is going into my basket! = 你的菸都飄進我的籃子裡了！ | These cookies are for my grandmother. = 這些餅乾是要給我奶奶的。 | She doesn't like secondhand smoke! = 她不喜歡二手菸！
 C: Oh, no! = 噢，不！ | My beautiful dress smells like smoke! = 我美麗的禮服都是菸味！ | I just washed it! = 我才剛洗好耶！ | I have to wear it to the ball tonight! = 我今晚還要穿它去參加舞會！
 W: Relax, ladies! = 放輕鬆，女士們！ | I am just a smoking wolf! = 我只是一隻愛抽菸的狼！
-RR: Mr. Wolf, what big smoke you have! = 大野狼先生，你的菸怎麼這麼大！
+RR: Mr. Wolf, what big smoke clouds you have! = 大野狼先生，你吐的煙霧怎麼這麼大一團！
 SW: A smoking wolf is still a bad wolf! = 愛抽菸的狼還是壞狼！
 # Scene 2 | Call the Government! | 召喚公務機關
 N: Our three friends did not give up. = 三位朋友沒有放棄。 | They knew who could help them. = 她們知道誰能幫忙。
@@ -213,7 +200,7 @@ C: Hello! District Office? = 喂！是區公所嗎？ | There is a smoking probl
 D: Hello, everyone! = 大家好！ | I am from the District Office. = 我是區公所的人員。 | What happened here? = 這裡發生什麼事了？
 SW: That wolf is smoking in the no-smoking area! = 那隻狼在禁菸區抽菸！
 D: I see. = 我了解了。 | This park has a no-smoking area. = 這座公園有劃設禁菸區。 | We have signs here. = 這裡都有告示牌。 | I will contact the Health Department. = 我會聯絡衛生局。
-W: Why do you call so many people? = 你們幹嘛找這麼多人來？ | I only have one cigarette! = 我只有一根菸而已！
+W: Why did you call so many people? = 你們幹嘛找這麼多人來？ | I only have one cigarette! = 我只有一根菸而已！
 D: Because public service is teamwork! = 因為公共服務就是團隊合作！ | One problem, many departments! = 一個問題，很多機關一起處理！
 ~ 衛生局人員上場。
 H: Good afternoon! = 午安！ | I am from the Health Department. = 我是衛生局的人員。 | Who is smoking here? = 是誰在這裡抽菸？
@@ -221,7 +208,7 @@ W: Not me! = 不是我！ | Maybe the wind is smoking! = 可能是風在抽菸�
 RR: The wind can't smoke! = 風才不會抽菸！ | I saw you with my own eyes! = 我親眼看到是你！
 H: Sir, please put out your cigarette. = 先生，請把菸熄掉。 | This is a designated no-smoking area. = 這裡是公告的禁菸區。 | And yes, rules apply to wolves, too! = 還有，沒錯，規定對狼一樣適用！
 # Scene 3 | The Police Arrive | 警察來了
-N: Just then, we heard a siren! = 就在這時，警笛聲響起！
+N: Just then, they heard a siren! = 就在這時，大家聽到了警笛聲！
 ~ 警察帥氣登場，可以搭配警笛音效。
 P: Stop! = 不要動！ | Police! = 警察！ | Someone reported a smoking wolf. = 有人通報一隻狼在抽菸。 | What is happening here? = 這裡發生什麼事？
 W: Oh, no! Police! = 噢，不！是警察！ | I am innocent! = 我是無辜的！
@@ -232,20 +219,20 @@ W: Identification? = 身分證件？ | I only have my wolf ID! = 我只有狼的
 ~ 大野狼拿出一張假身分證。
 P: A wolf ID? = 狼的身分證？ | That's interesting! = 真有意思！ | The photo looks like a dog. = 照片看起來像一隻狗。 | But we still need to confirm your identity. = 但我們還是得確認你的身分。
 SW: Officer, my magic mirror says he is the Big Bad Wolf! = 警官，我的魔鏡說他就是大野狼！
-D: Let's work together. = 我們一起合作吧。 | The District Office manages the park. = 區公所負責管理公園。 | The Health Department handles smoking control. = 衛生局負責菸害管制。 | The Police help maintain public order. = 警察協助維持公共秩序。
-C: Wow! = 哇！ | Government teamwork is like magic! = 政府的團隊合作就像魔法一樣！ | It's even better than my fairy godmother! = 比我的神仙教母還厲害！
+D: Let's work together. = 我們一起合作吧。 | The District Office manages the park. = 區公所負責管理公園。 | The Health Department handles smoking control. = 衛生局負責菸害管制。 | The police help maintain public order. = 警察協助維持公共秩序。
+C: Wow! = 哇！ | Government teamwork is like magic! = 政府的團隊合作就像魔法一樣！ | It's even better than my fairy godmother's magic! = 比我神仙教母的魔法還厲害！
 SW: Yes! = 沒錯！ | But this is not a fairy tale. = 但這不是童話故事。 | We need real action! = 我們需要真正的行動！
 # Scene 4 | The Lesson | 違規者的覺醒
 H: Sir, your behavior may violate the Tobacco Hazards Prevention Act. = 先生，您的行為可能違反《菸害防制法》。 | If a violation is confirmed, you may be fined according to the law. = 如果確認違規，將依法處以罰鍰。
 W: A fine? = 罰錢？ | How much? = 要罰多少？
 P: That depends on the law, not on your tail! = 那要看法律怎麼規定，不是看你的尾巴！
-RR: See, Mr. Wolf? = 看吧，大野狼先生？ | Please protect children and older people from secondhand smoke. = 請保護兒童和長輩，別讓他們吸到二手菸。 | Like my grandmother! = 就像我奶奶！
+RR: See, Mr. Wolf? = 看吧，大野狼先生？ | Please protect children and older people from secondhand smoke. = 請保護兒童和長輩，別讓他們吸到二手菸。 | People like my grandmother! = 像我奶奶這樣的人！
 D: We will also put up bigger signs in the park. = 我們也會在公園裡設置更大的告示牌。
 C: And I will help spread the message! = 我也會幫忙宣導！ | I'll post it online! = 我要把它 po 上網！ | A clean park makes everyone happy! = 乾淨的公園讓大家都開心！
 P: Remember! = 記住！ | Follow the rules and respect others. = 遵守規定，尊重他人。 | That's how we keep the park safe. = 這樣才能讓公園保持安全。
 SW: A beautiful park needs everyone's help! = 美麗的公園需要大家一起守護！
 # Scene 5 | Happy Ending | 童話大結局
-N: And so, the park became beautiful again. = 就這樣，公園又恢復了美麗。 | The government worked together. = 政府機關攜手合作。 | The citizens learned to respect the rules. = 市民學會了尊重規定。 | And the Big Bad Wolf made a big change! = 而大野狼也有了很大的改變！
+N: And so, the park became beautiful again. = 就這樣，公園又恢復了美麗。 | The government offices worked together. = 政府機關攜手合作。 | The citizens learned to respect the rules. = 市民學會了尊重規定。 | And the Big Bad Wolf made a big change! = 而大野狼也有了很大的改變！
 W: Sorry, everyone! = 對不起，各位！ | I will blow away... = 我要吹走的…… | NOT the people... = 不是人…… | BUT the smoke! = 而是菸！
 ~ 大野狼做出吹走煙霧的動作，接著丟掉假香菸。
 SW: No smoking! = 禁止吸菸！
@@ -254,7 +241,7 @@ C: Clean air! = 清新空氣！
 D: Good public service! = 優質公共服務！
 P: Good cooperation! = 良好合作！
 H: A smoke-free environment! = 無菸環境！
-ALL: One park! One team! = 一座公園！一個團隊！ | Let's keep our park clean! = 一起讓公園保持乾淨！ | Let's keep our air fresh! = 一起讓空氣保持清新！ | Together, we make a better Taiwan! = 攜手打造更好的台灣！
+ALL: One park! One team! = 一座公園！一個團隊！ | Let's keep our park clean! = 一起讓公園保持乾淨！ | Let's keep our air fresh! = 一起讓空氣保持清新！ | Together, we can make a better Taiwan! = 攜手打造更好的台灣！
 `;
 
 // Hard words only: [phrase as it appears, IPA (US), 中文]
@@ -354,7 +341,6 @@ function isMine(i){ const r = cues[i].role; return !!role && (r === role || r ==
 function applyRole(){
   $("#btnRole").style.setProperty("--c", role ? ROLES[role][2] : "var(--faint)");
   $("#roleName").textContent = role ? ROLES[role][0] : "選角色";
-  $("#introPick").textContent = role ? `我的角色：${ROLES[role][0]}（點這裡更換）` : "選擇我的角色";
   document.body.classList.toggle("dimming", !!role);
   cueEls.forEach((el, i) => {
     el.classList.toggle("mine", isMine(i));
@@ -369,7 +355,6 @@ function openRoles(){
     <div class="roles">${opts.map(([k, n]) => `<button type="button" class="rbtn${k ? "" : " all"}" data-role="${k}" aria-pressed="${k === role}" style="--c:${k ? ROLES[k][2] : "var(--faint)"}">${k ? "<i></i>" : ""}${n}</button>`).join("")}</div>`);
 }
 $("#btnRole").addEventListener("click", openRoles);
-$("#introPick").addEventListener("click", openRoles);
 
 // Progress
 function setCur(i, scroll){
