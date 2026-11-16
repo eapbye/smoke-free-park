@@ -69,10 +69,15 @@ body.zhon .tr{display:block}
 .say:active{background:var(--band)}
 .ln.playing .say{background:var(--pri);border-color:var(--pri);color:#fff}
 
-body.dimming .cue:not(.mine){opacity:.62}
+body.dimming .cue:not(.mine):not(.now) .ln,body.dimming .cue:not(.mine):not(.now) .who > :not(.tag){opacity:.5}
+.cue.before .who .tag{background:#ffe28a;color:#7a5600}
+.cue.mine{background:#fff3c4;box-shadow:0 0 0 2px #e2b93b,var(--lift)}
+.cue.mine .who strong::after{content:"我的台詞";margin-left:8px;font-size:.72rem;font-weight:700;color:#7a5600;background:#ffe28a;border-radius:999px;padding:2px 8px;vertical-align:2px}
+.cue.mine .ln{border-top-color:#f0dc9a}
 .cue.mine .txt{font-weight:700}
 .cue.mine .tr{font-weight:400}
-.cue.now{opacity:1 !important;box-shadow:0 0 0 3px var(--pri),var(--lift);background:#f7fbff}
+.cue.now{opacity:1 !important;box-shadow:0 0 0 3px var(--pri),var(--lift)}
+.cue.now:not(.mine){background:#f7fbff}
 
 .w{all:unset;cursor:pointer;color:inherit;font-weight:inherit;border-bottom:2px dotted var(--pri);padding:0 1px;touch-action:manipulation}
 .w:active{background:var(--pri-soft)}
