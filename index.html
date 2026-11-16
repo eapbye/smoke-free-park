@@ -4,150 +4,161 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>公園無菸大作戰 劇本</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Fraunces:opsz,wght@9..144,600;9..144,700&display=swap" rel="stylesheet">
 <style>
-/* Layout: sticky header with role chips, single readable script column, fixed progress bar at the bottom. */
+/* Layout: title, sticky tool bar (role / 中文 / 難字 / 字級), one script column, fixed progress bar. Palette follows the 社大工作台: warm paper, soft-lift cards, one blue primary, low-chroma role colours. */
 :root{
-  --paper:#f4f7f2;
-  --surface:#ffffff;
-  --ink:#1b231f;
-  --muted:#626e67;
-  --line:#dce3d9;
-  --accent:#2d6a4c;
-  --accent-soft:#e2eee6;
-  --now:#fff0bd;
-  --display:"Fraunces", Georgia, "Times New Roman", serif;
-  --body:"Atkinson Hyperlegible", system-ui, -apple-system, "PingFang TC", "Noto Sans TC", "Microsoft JhengHei", sans-serif;
-  --fs:18px;
+  --ink:#20303a; --ink-soft:#4f5c65; --faint:#76818a;
+  --paper:#f1efea; --card:#fffdf9;
+  --line:#c4c8be; --line2:#d3dbe3; --sep:#ecede8;
+  --pri:#1d6fa5; --pri-soft:#e7eff6; --pri-line:#9fb9d0;
+  --band:#dfe8f1; --board:#e6ecf2;
+  --lift:0 1px 2px rgba(32,48,58,.07),0 3px 10px rgba(32,48,58,.05);
+  --r-sm:7px; --r:11px; --r-lg:14px;
+  --font:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang TC","Microsoft JhengHei","Noto Sans TC",sans-serif;
+  --fs:19px;
   color-scheme:light;
-}
-@media (prefers-color-scheme: dark){
-  :root:not([data-theme="light"]){
-    --paper:#111613; --surface:#18201b; --ink:#e5ebe6; --muted:#97a49c; --line:#2a332e;
-    --accent:#7cc39d; --accent-soft:#1d3127; --now:#3a3317; color-scheme:dark;
-  }
-}
-:root[data-theme="dark"]{
-  --paper:#111613; --surface:#18201b; --ink:#e5ebe6; --muted:#97a49c; --line:#2a332e;
-  --accent:#7cc39d; --accent-soft:#1d3127; --now:#3a3317; color-scheme:dark;
 }
 *{box-sizing:border-box}
 html,body{margin:0}
-body{background:var(--paper);color:var(--ink);font-family:var(--body);line-height:1.5;-webkit-text-size-adjust:100%}
-button{font:inherit;color:inherit}
-:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+body{background:var(--paper);color:var(--ink);font-family:var(--font);line-height:1.55;-webkit-text-size-adjust:100%;-webkit-tap-highlight-color:transparent}
+button{font:inherit;color:inherit;touch-action:manipulation;-webkit-user-select:none;user-select:none}
+:focus-visible{outline:2px solid var(--pri);outline-offset:2px}
+.wrap{max-width:680px;margin:0 auto}
 
-header{position:sticky;top:0;z-index:5;background:var(--paper);border-bottom:1px solid var(--line);
-  padding:calc(10px + env(safe-area-inset-top)) max(16px, env(safe-area-inset-right)) 10px max(16px, env(safe-area-inset-left))}
-.wrap{max-width:720px;margin:0 auto}
-.title{display:flex;align-items:baseline;justify-content:space-between;gap:12px;flex-wrap:wrap}
-h1{font-family:var(--display);font-size:1.35rem;margin:0;text-wrap:balance;letter-spacing:.01em}
-.sub{color:var(--muted);font-size:.85rem}
-.chips{display:flex;gap:6px;overflow-x:auto;padding:10px 0 4px;scrollbar-width:none}
-.chips::-webkit-scrollbar{display:none}
-.chip{flex:none;display:flex;align-items:center;gap:6px;border:1px solid var(--line);background:var(--surface);
-  border-radius:999px;padding:6px 12px;font-size:.88rem;cursor:pointer;white-space:nowrap}
-.chip i{width:9px;height:9px;border-radius:50%;background:var(--c)}
-.chip[aria-pressed="true"]{border-color:var(--accent);background:var(--accent-soft);font-weight:700}
-.tools{display:flex;gap:6px;flex-wrap:wrap;padding-top:6px}
-.tool{border:1px solid var(--line);background:var(--surface);border-radius:8px;padding:5px 10px;font-size:.85rem;cursor:pointer}
-.tool[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--paper)}
+/* title */
+.head{padding:calc(18px + env(safe-area-inset-top)) max(16px, env(safe-area-inset-right)) 6px max(16px, env(safe-area-inset-left))}
+h1{margin:0;font-size:1.5rem;line-height:1.25;letter-spacing:.5px;text-wrap:balance}
+.sub{color:var(--ink-soft);font-size:.92rem;margin-top:2px}
 
-main{padding:16px max(16px, env(safe-area-inset-right)) 120px max(16px, env(safe-area-inset-left))}
-.howto{font-size:.88rem;color:var(--muted);background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:10px 12px;margin-bottom:8px}
-.howto b{color:var(--ink)}
+/* sticky tools */
+.tools{position:sticky;top:0;z-index:5;background:var(--paper);border-bottom:1px solid var(--line2);
+  padding:8px max(16px, env(safe-area-inset-right)) 8px max(16px, env(safe-area-inset-left))}
+.tools .wrap{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:8px}
+.tbtn{height:44px;border:1px solid var(--line);background:var(--card);border-radius:var(--r);padding:0 6px;font-size:.95rem;
+  display:flex;align-items:center;justify-content:center;gap:6px;cursor:pointer;white-space:nowrap;min-width:0}
+.tbtn:active{background:var(--board)}
+.tbtn[aria-pressed="true"]{background:var(--pri);border-color:var(--pri);color:#fff}
+.tbtn.role{justify-content:center;padding:0 8px;letter-spacing:-.02em;border-color:var(--pri-line);background:var(--pri-soft);color:var(--pri);font-weight:700}
+.tbtn.role i{flex:none;width:10px;height:10px;border-radius:50%;background:var(--c)}
+.tbtn.role span{overflow:hidden;text-overflow:ellipsis}
+.tbtn.role b{margin-left:auto;font-weight:400;font-size:.8rem;opacity:.8}
 
-.scene{margin:28px 0 10px;display:flex;flex-direction:column;gap:2px}
-.scene .no{font-size:.75rem;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);font-weight:700}
-.scene h2{font-family:var(--display);font-size:1.2rem;margin:0;text-wrap:balance}
-.scene .zh{color:var(--muted);font-size:.9rem}
-.dir{color:var(--muted);font-size:.88rem;margin:8px 0 8px 14px;padding-left:10px;border-left:2px dashed var(--line)}
+main{padding:14px max(16px, env(safe-area-inset-right)) 130px max(16px, env(safe-area-inset-left))}
+.intro{background:var(--card);border-radius:var(--r-lg);box-shadow:var(--lift);padding:14px 16px;font-size:.93rem;color:var(--ink-soft)}
+.intro ul{margin:6px 0 0;padding-left:1.2em;display:grid;gap:3px}
+.intro b{color:var(--ink)}
+.intro .pick{margin-top:12px;width:100%;min-height:48px;border:none;border-radius:var(--r);background:var(--pri);color:#fff;font-weight:700;font-size:1rem;cursor:pointer}
 
-.cue{position:relative;background:var(--surface);border:1px solid var(--line);border-left:5px solid var(--c);
-  border-radius:10px;padding:8px 12px 10px;margin:8px 0;cursor:pointer;transition:opacity .2s, background-color .2s}
-.who{display:flex;align-items:center;gap:8px;font-size:.8rem;color:var(--muted)}
-.who strong{color:var(--ink);font-size:.9rem}
-.ln{margin:4px 0;font-size:var(--fs);line-height:1.45}
-.ln{display:flex;align-items:flex-start;gap:8px}
-.ln .txt{flex:1;min-width:0}
-.ln .hint{display:none}
-.tr{display:none;font-size:calc(var(--fs) * .8);color:var(--muted);font-weight:400;margin-top:1px}
+.scene{margin:30px 0 10px;padding:10px 14px;background:var(--band);border-radius:var(--r);display:flex;align-items:baseline;gap:4px 10px;flex-wrap:wrap}
+.scene .no{font-size:.78rem;font-weight:700;color:var(--pri);letter-spacing:.08em;text-transform:uppercase}
+.scene h2{margin:0;font-size:1.08rem}
+.scene .zh{color:var(--ink-soft);font-size:.92rem}
+.dir{color:var(--faint);font-size:.9rem;margin:10px 4px 10px 6px;padding-left:10px;border-left:3px solid var(--line2)}
+
+.cue{background:var(--card);border-radius:var(--r-lg);box-shadow:var(--lift);border-left:6px solid var(--c);padding:10px 10px 8px 14px;margin:10px 0;transition:opacity .2s, box-shadow .2s}
+.who{display:flex;align-items:center;gap:8px;min-height:36px;margin-bottom:2px}
+.who strong{font-size:.98rem;flex:none}
+.who .en{color:var(--faint);font-size:.82rem;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0}
+.who .tag{display:none;flex:none;font-size:.75rem;font-weight:700;color:var(--pri);background:var(--pri-soft);border-radius:999px;padding:2px 9px}
+.cue.before .who .tag{display:inline-block}
+.who .jump{flex:none;margin-left:auto;height:34px;min-width:44px;padding:0 10px;border:1px solid var(--line2);border-radius:999px;background:transparent;color:var(--faint);font-size:.8rem;cursor:pointer;font-variant-numeric:tabular-nums}
+.who .jump:active{background:var(--board)}
+.ln{display:flex;align-items:flex-start;gap:12px;padding:6px 0;border-top:1px solid var(--sep)}
+.who + .ln{border-top:none}
+.ln .txt{flex:1;min-width:0;font-size:var(--fs);line-height:1.45;padding-top:6px}
+.tr{display:none;font-size:calc(var(--fs) * .78);color:var(--ink-soft);margin-top:2px;line-height:1.45}
 body.zhon .tr{display:block}
-.say{flex:none;width:30px;height:30px;margin-top:1px;border-radius:50%;border:1px solid var(--line);background:var(--paper);color:var(--accent);cursor:pointer;display:grid;place-items:center;padding:0}
-.say svg{width:15px;height:15px}
-.ln.playing .say{background:var(--accent);color:var(--paper);border-color:var(--accent)}
-body.dimming .cue:not(.mine){opacity:.5}
-.cue.mine{background:color-mix(in srgb, var(--c) 10%, var(--surface));box-shadow:0 0 0 1px var(--c) inset}
-.cue.mine .ln{font-weight:700}
-.cue.now{background:var(--now);opacity:1 !important;box-shadow:0 0 0 2px var(--accent)}
-.tag{display:none;margin-left:auto;font-size:.72rem;font-weight:700;color:var(--accent);border:1px solid var(--accent);border-radius:999px;padding:0 8px}
-.cue.before .tag{display:inline-block}
-body.cuemode .cue.mine:not(.reveal) .ln .full{display:none}
-body.cuemode .cue.mine:not(.reveal) .ln .hint{display:inline;color:var(--muted)}
-body.cuemode .cue.mine:not(.reveal) .tr{display:none}
-.end{text-align:center;font-family:var(--display);font-size:1.1rem;color:var(--muted);margin:28px 0}
+.say{flex:none;width:44px;height:44px;border-radius:50%;border:1px solid var(--pri-line);background:var(--pri-soft);color:var(--pri);cursor:pointer;display:grid;place-items:center;padding:0}
+.say svg{width:20px;height:20px}
+.say:active{background:var(--band)}
+.ln.playing .say{background:var(--pri);border-color:var(--pri);color:#fff}
 
-.w{all:unset;cursor:pointer;border-bottom:2px dotted var(--accent);color:inherit;font-weight:inherit}
-.w:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
+body.dimming .cue:not(.mine){opacity:.62}
+.cue.mine .txt{font-weight:700}
+.cue.mine .tr{font-weight:400}
+.cue.now{opacity:1 !important;box-shadow:0 0 0 3px var(--pri),var(--lift);background:#f7fbff}
 
-.bar{position:fixed;left:0;right:0;bottom:0;z-index:6;background:var(--surface);border-top:1px solid var(--line);
-  padding:8px max(12px, env(safe-area-inset-right)) calc(8px + env(safe-area-inset-bottom)) max(12px, env(safe-area-inset-left))}
-.bar .wrap{display:flex;align-items:center;gap:10px}
-.nav{flex:none;width:52px;height:44px;border-radius:10px;border:1px solid var(--line);background:var(--paper);font-size:1.1rem;cursor:pointer}
-.nav.next{background:var(--accent);border-color:var(--accent);color:var(--paper)}
-.status{flex:1;text-align:center;font-size:.85rem;line-height:1.3;font-variant-numeric:tabular-nums}
-.status b{display:block;font-size:.95rem}
+.w{all:unset;cursor:pointer;color:inherit;font-weight:inherit;border-bottom:2px dotted var(--pri);padding:0 1px;touch-action:manipulation}
+.w:active{background:var(--pri-soft)}
+.w:focus-visible{outline:2px solid var(--pri);outline-offset:1px}
+.end{text-align:center;color:var(--faint);margin:30px 0 0;font-weight:700}
 
-.scrim{position:fixed;inset:0;background:rgba(0,0,0,.35);z-index:9;display:none}
-.sheet{position:fixed;left:0;right:0;bottom:0;z-index:10;background:var(--surface);border-radius:16px 16px 0 0;
-  border-top:1px solid var(--line);padding:16px max(16px, env(safe-area-inset-right)) calc(18px + env(safe-area-inset-bottom)) max(16px, env(safe-area-inset-left));
-  transform:translateY(105%);transition:transform .22s ease;max-height:80vh;overflow-y:auto}
-.open .scrim{display:block}
-.sheet.show{transform:none}
-.sheet .wrap{display:flex;flex-direction:column;gap:10px}
-.sheet .row1{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
-.word{font-size:1.6rem;font-weight:700;line-height:1.2}
-.ipa{color:var(--muted);font-size:1rem}
-.mean{font-size:1.05rem}
-.play{display:flex;gap:8px}
-.play button{flex:1;height:46px;border-radius:10px;border:1px solid var(--accent);background:var(--accent);color:var(--paper);font-weight:700;cursor:pointer}
-.x{border:none;background:none;font-size:1.4rem;line-height:1;padding:4px 6px;cursor:pointer;color:var(--muted)}
-.list h3{margin:0;font-family:var(--display);font-size:1.15rem}
-.list ul{list-style:none;margin:0;padding:0}
-.list li{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--line)}
+/* progress bar */
+.bar{position:fixed;left:0;right:0;bottom:0;z-index:6;background:var(--card);box-shadow:0 -1px 0 var(--line2),0 -4px 14px rgba(32,48,58,.06);
+  padding:10px max(14px, env(safe-area-inset-right)) calc(10px + env(safe-area-inset-bottom)) max(14px, env(safe-area-inset-left))}
+.bar .wrap{display:flex;align-items:center;gap:12px}
+.nav{flex:none;width:64px;height:52px;border-radius:var(--r);border:1px solid var(--line);background:var(--card);font-size:1.15rem;cursor:pointer}
+.nav:active{background:var(--board)}
+.nav.next{background:var(--pri);border-color:var(--pri);color:#fff}
+.nav.next:active{background:#175c89}
+.nav:disabled{opacity:.35}
+.status{flex:1;text-align:center;font-size:.85rem;line-height:1.35;color:var(--ink-soft);font-variant-numeric:tabular-nums;min-width:0}
+.status b{display:block;font-size:.98rem;color:var(--ink)}
+.status .me{color:var(--pri);font-weight:700}
+
+/* sheets */
+.scrim{position:fixed;inset:0;background:rgba(32,48,58,.35);z-index:9;display:none}
+body.open .scrim{display:block}
+.sheet{position:fixed;left:0;right:0;bottom:0;z-index:10;background:var(--card);border-radius:18px 18px 0 0;
+  padding:10px max(16px, env(safe-area-inset-right)) calc(18px + env(safe-area-inset-bottom)) max(16px, env(safe-area-inset-left));
+  transform:translateY(105%);transition:transform .22s ease;max-height:82vh;overflow-y:auto;visibility:hidden}
+.sheet.show{transform:none;visibility:visible}
+.sheet .wrap{display:flex;flex-direction:column;gap:12px}
+.grab{width:40px;height:4px;border-radius:2px;background:var(--line2);margin:0 auto 4px}
+.shead{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.shead h3{margin:0;font-size:1.1rem}
+.x{flex:none;width:44px;height:44px;border:1px solid var(--line2);border-radius:50%;background:var(--card);font-size:1.1rem;cursor:pointer;color:var(--ink-soft)}
+.roles{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.rbtn{min-height:58px;border:1px solid var(--line);border-radius:var(--r);background:var(--card);cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;padding:6px 4px;font-size:.95rem}
+.rbtn i{width:12px;height:12px;border-radius:50%;background:var(--c)}
+.rbtn[aria-pressed="true"]{border:2px solid var(--pri);background:var(--pri-soft);color:var(--pri);font-weight:700}
+.rbtn.all{grid-column:1 / -1;min-height:48px;flex-direction:row}
+.word{font-size:1.7rem;font-weight:700;line-height:1.2}
+.ipa{color:var(--ink-soft);font-size:1.05rem}
+.mean{font-size:1.1rem}
+.big{height:52px;border:none;border-radius:var(--r);background:var(--pri);color:#fff;font-weight:700;font-size:1.05rem;cursor:pointer}
+.list{list-style:none;margin:0;padding:0}
+.list li{display:flex;align-items:center;gap:12px;padding:8px 0;border-top:1px solid var(--sep)}
+.list li:first-child{border-top:none}
 .list li div{flex:1;min-width:0}
-.list li small{color:var(--muted);display:block}
-.list li button{flex:none;width:40px;height:36px;border-radius:8px;border:1px solid var(--line);background:var(--paper);cursor:pointer}
-
-.toast{position:fixed;left:50%;bottom:90px;transform:translateX(-50%);background:var(--ink);color:var(--paper);
-  padding:8px 14px;border-radius:999px;font-size:.85rem;z-index:20;opacity:0;pointer-events:none;transition:opacity .2s}
+.list li small{display:block;color:var(--ink-soft)}
+.sizes{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.sizes button{height:56px;border:1px solid var(--line);border-radius:var(--r);background:var(--card);cursor:pointer}
+.sizes button[aria-pressed="true"]{border:2px solid var(--pri);background:var(--pri-soft);color:var(--pri);font-weight:700}
+.toast{position:fixed;left:50%;bottom:100px;transform:translateX(-50%);background:var(--ink);color:#fff;padding:9px 16px;border-radius:999px;font-size:.88rem;z-index:20;opacity:0;pointer-events:none;transition:opacity .2s;max-width:90vw;text-align:center}
 .toast.show{opacity:1}
 @media (prefers-reduced-motion: reduce){ .sheet,.cue,.toast{transition:none} }
 </style>
 </head>
 <body>
-<header>
+<div class="head">
   <div class="wrap">
-    <div class="title">
-      <h1>公園無菸大作戰</h1>
-      <span class="sub">Once Upon a Smoke-Free Park</span>
-    </div>
-    <div class="chips" id="chips" role="group" aria-label="選擇我的角色"></div>
-    <div class="tools">
-      <button class="tool" id="btnZh" type="button" aria-pressed="false">中文翻譯</button>
-      <button class="tool" id="btnList" type="button">難字表</button>
-      <button class="tool" id="btnCue" type="button" aria-pressed="false">提詞模式</button>
-      <button class="tool" id="btnSmaller" type="button" aria-label="字體縮小">A−</button>
-      <button class="tool" id="btnBigger" type="button" aria-label="字體放大">A+</button>
-    </div>
+    <h1>公園無菸大作戰</h1>
+    <div class="sub">Once Upon a Smoke-Free Park｜基礎訓英文會話劇本</div>
   </div>
-</header>
+</div>
+
+<div class="tools">
+  <div class="wrap">
+    <button class="tbtn role" id="btnRole" type="button" style="--c:var(--faint)"><i></i><span id="roleName">選角色</span></button>
+    <button class="tbtn" id="btnZh" type="button" aria-pressed="false">中文</button>
+    <button class="tbtn" id="btnList" type="button">難字</button>
+    <button class="tbtn" id="btnSize" type="button">字級</button>
+  </div>
+</div>
 
 <main>
   <div class="wrap">
-    <p class="howto"><b>怎麼用：</b>點每句右邊的喇叭可以聽整句，點有虛線底線的難字可以看音標和中文；上方「中文翻譯」可以在每句英文下面顯示中文；上方選你的角色，你的台詞會亮起來；排練時點任一句或用下方按鈕跟著進度走。開啟「提詞模式」後，你的台詞只剩每句開頭，點一下就能看全句。</p>
+    <div class="intro">
+      <b>怎麼用</b>
+      <ul>
+        <li>點每句右邊的 <b>喇叭</b> 聽整句，再點一次停止。</li>
+        <li>點 <b>虛線底線</b> 的難字，看音標和中文。</li>
+        <li>上方 <b>中文</b> 可以在英文下面顯示翻譯。</li>
+        <li>排練時用最下方的 <b>◀ ▶</b> 一段一段往下走；想從中間開始，點那段右上角的「第 N 段」。</li>
+      </ul>
+      <button class="pick" id="introPick" type="button">選擇我的角色</button>
+    </div>
     <div id="script"></div>
     <p class="end">The End!</p>
   </div>
@@ -155,27 +166,27 @@ body.cuemode .cue.mine:not(.reveal) .tr{display:none}
 
 <div class="bar">
   <div class="wrap">
-    <button class="nav" id="prev" type="button" aria-label="上一句">◀</button>
+    <button class="nav" id="prev" type="button" aria-label="上一段">◀</button>
     <div class="status" id="status" aria-live="polite"></div>
-    <button class="nav next" id="next" type="button" aria-label="下一句">▶</button>
+    <button class="nav next" id="next" type="button" aria-label="下一段">▶</button>
   </div>
 </div>
 
 <div class="scrim" id="scrim"></div>
-<div class="sheet" id="sheet" role="dialog" aria-modal="true" aria-label="單字發音"><div class="wrap" id="sheetBody"></div></div>
+<div class="sheet" id="sheet" role="dialog" aria-modal="true"><div class="wrap" id="sheetBody"></div></div>
 <div class="toast" id="toast"></div>
 
 <script>
 const ROLES = {
-  N:   ["旁白", "Narrator", "#6b7280"],
-  SW:  ["白雪公主", "Snow White", "#d4a017"],
-  RR:  ["小紅帽", "Little Red Riding Hood", "#d1453b"],
+  N:   ["旁白", "Narrator", "#7b858c"],
+  SW:  ["白雪公主", "Snow White", "#c9a227"],
+  RR:  ["小紅帽", "Little Red Riding Hood", "#b9443f"],
   W:   ["大野狼", "Big Bad Wolf", "#8a6a46"],
-  H:   ["衛生局人員", "Health Officer", "#1f9e89"],
-  P:   ["警察", "Police Officer", "#3b5bdb"],
-  D:   ["區公所人員", "District Office Staff", "#8b5cf6"],
-  C:   ["灰姑娘", "Cinderella", "#d0659a"],
-  ALL: ["全體", "Everyone together", "var(--accent)"]
+  H:   ["衛生局人員", "Health Officer", "#2f7a6a"],
+  P:   ["警察", "Police Officer", "#2c4677"],
+  D:   ["區公所人員", "District Office Staff", "#6c5a9e"],
+  C:   ["灰姑娘", "Cinderella", "#c16b93"],
+  ALL: ["全體", "Everyone together", "#1d6fa5"]
 };
 
 const RAW = `
@@ -299,12 +310,10 @@ const esc = s => s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 const wordRe = new RegExp("\\b(" + WORDS.map(w => w[0]).sort((a, b) => b.length - a.length).map(esc).join("|") + ")\\b", "gi");
 const html = s => s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
 const mark = s => html(s).replace(wordRe, m => `<button type="button" class="w" data-w="${m.toLowerCase()}">${m}</button>`);
-const hint = s => { const p = s.split(" "); return p.length > 3 ? p.slice(0, 3).join(" ") + " …" : s; };
+const SPK = '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9H4zm12.5 3a4.5 4.5 0 0 0-2.5-4v8a4.5 4.5 0 0 0 2.5-4zM14 3.2v2.1a7 7 0 0 1 0 13.4v2.1a9 9 0 0 0 0-17.6z"/></svg>';
 
 // Parse and render
-const cues = [];
-const SAY = [];
-const SPK = '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9H4zm12.5 3a4.5 4.5 0 0 0-2.5-4v8a4.5 4.5 0 0 0 2.5-4zM14 3.2v2.1a7 7 0 0 1 0 13.4v2.1a9 9 0 0 0 0-17.6z"/></svg>';
+const cues = [], SAY = [];
 let out = "", sceneName = "";
 RAW.trim().split("\n").forEach(line => {
   line = line.trim();
@@ -322,9 +331,10 @@ RAW.trim().split("\n").forEach(line => {
     const r = ROLES[role];
     const i = cues.length;
     cues.push({ role, scene: sceneName });
-    out += `<div class="cue" data-i="${i}" data-role="${role}" style="--c:${r[2]}">
-      <div class="who"><strong>${r[0]}</strong><span>${r[1]}</span><span class="tag">下一句換你</span></div>
-      ${lines.map(l => { const n = SAY.push(l.en) - 1; return `<div class="ln" data-l="${n}"><div class="txt"><span class="full">${mark(l.en)}</span><span class="hint">${html(hint(l.en))}</span><span class="tr">${html(l.zh)}</span></div><button type="button" class="say" aria-label="播放這一句">${SPK}</button></div>`; }).join("")}
+    out += `<div class="cue" data-i="${i}" style="--c:${r[2]}">
+      <div class="who"><strong>${r[0]}</strong><span class="en">${r[1]}</span><span class="tag">下一段換你</span>
+        <button type="button" class="jump" aria-label="從第 ${i + 1} 段開始">第 ${i + 1} 段</button></div>
+      ${lines.map(l => { const n = SAY.push(l.en) - 1; return `<div class="ln" data-l="${n}"><div class="txt">${mark(l.en)}<span class="tr">${html(l.zh)}</span></div><button type="button" class="say" aria-label="播放這一句">${SPK}</button></div>`; }).join("")}
     </div>`;
   }
 });
@@ -333,99 +343,85 @@ const cueEls = [...document.querySelectorAll(".cue")];
 
 // State
 let role = store.get("role", "");
-let cur = -1;
-let fs = store.get("fs", 18);
 if (!ROLES[role] || role === "ALL") role = "";
+let cur = -1;
+const SIZES = [["小", 16], ["中", 19], ["大", 22], ["特大", 26]];
+let size = store.get("size", 1);
+if (!SIZES[size]) size = 1;
 
-// Role chips
-const chipData = [["", "全部看", "var(--muted)"]].concat(Object.keys(ROLES).filter(k => k !== "ALL").map(k => [k, ROLES[k][0], ROLES[k][2]]));
-$("#chips").innerHTML = chipData.map(([k, name, c]) => `<button type="button" class="chip" data-role="${k}" style="--c:${c}" aria-pressed="false"><i></i>${name}</button>`).join("");
-$("#chips").addEventListener("click", e => {
-  const b = e.target.closest(".chip"); if (!b) return;
-  role = b.dataset.role; store.set("role", role); applyRole();
-});
-
-function isMine(i){ const r = cues[i].role; return role && (r === role || r === "ALL"); }
+// Role
+function isMine(i){ const r = cues[i].role; return !!role && (r === role || r === "ALL"); }
 function applyRole(){
-  document.querySelectorAll(".chip").forEach(c => c.setAttribute("aria-pressed", c.dataset.role === role ? "true" : "false"));
+  $("#btnRole").style.setProperty("--c", role ? ROLES[role][2] : "var(--faint)");
+  $("#roleName").textContent = role ? ROLES[role][0] : "選角色";
+  $("#introPick").textContent = role ? `我的角色：${ROLES[role][0]}（點這裡更換）` : "選擇我的角色";
   document.body.classList.toggle("dimming", !!role);
   cueEls.forEach((el, i) => {
     el.classList.toggle("mine", isMine(i));
     el.classList.toggle("before", !!role && !isMine(i) && i + 1 < cues.length && isMine(i + 1));
-    el.classList.remove("reveal");
   });
-  if (!role && document.body.classList.contains("cuemode")) setCueMode(false);
   updateStatus();
 }
+function openRoles(){
+  const opts = [["", "全部都看"]].concat(Object.keys(ROLES).filter(k => k !== "ALL").map(k => [k, ROLES[k][0]]));
+  openSheet(`<div class="grab"></div>
+    <div class="shead"><h3>選擇我的角色</h3><button type="button" class="x" aria-label="關閉">✕</button></div>
+    <div class="roles">${opts.map(([k, n]) => `<button type="button" class="rbtn${k ? "" : " all"}" data-role="${k}" aria-pressed="${k === role}" style="--c:${k ? ROLES[k][2] : "var(--faint)"}">${k ? "<i></i>" : ""}${n}</button>`).join("")}</div>`);
+}
+$("#btnRole").addEventListener("click", openRoles);
+$("#introPick").addEventListener("click", openRoles);
 
 // Progress
 function setCur(i, scroll){
   if (i < 0 || i >= cues.length) return;
   if (cur >= 0) cueEls[cur].classList.remove("now");
   cur = i;
-  const el = cueEls[cur];
-  el.classList.add("now");
+  cueEls[cur].classList.add("now");
   if (scroll) {
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    el.scrollIntoView({ block: "center", behavior: reduce ? "auto" : "smooth" });
+    cueEls[cur].scrollIntoView({ block: "center", behavior: reduce ? "auto" : "smooth" });
   }
   updateStatus();
   keepAwake();
 }
 function updateStatus(){
   const s = $("#status");
-  if (cur < 0) { s.innerHTML = `<b>還沒開始</b>按 ▶ 從第一句開始排練`; return; }
-  let extra = "";
+  $("#prev").disabled = cur <= 0;
+  $("#next").disabled = cur >= cues.length - 1;
+  if (cur < 0) { s.innerHTML = `<b>還沒開始</b>按 ▶ 從第一段開始`; return; }
+  let extra = ROLES[cues[cur].role][0];
   if (role) {
-    if (isMine(cur)) extra = "輪到你了";
+    if (isMine(cur)) extra = `<span class="me">輪到你了</span>`;
     else {
       let j = cur + 1; while (j < cues.length && !isMine(j)) j++;
-      extra = j < cues.length ? `再 ${j - cur} 句換你` : "你的台詞已經結束";
+      extra = j < cues.length ? `${ROLES[cues[cur].role][0]}・再 ${j - cur} 段換你` : "你的台詞已經結束";
     }
   }
-  s.innerHTML = `<b>${cues[cur].scene} · 第 ${cur + 1} / ${cues.length} 句</b>${extra || ROLES[cues[cur].role][0]}`;
+  s.innerHTML = `<b>${cues[cur].scene}・第 ${cur + 1} / ${cues.length} 段</b>${extra}`;
 }
 $("#next").addEventListener("click", () => setCur(cur < 0 ? 0 : cur + 1, true));
 $("#prev").addEventListener("click", () => setCur(Math.max(0, cur - 1), true));
-document.addEventListener("keydown", e => {
-  if (document.body.classList.contains("open")) { if (e.key === "Escape") closeSheet(); return; }
-  if (e.key === "ArrowDown" || e.key === "ArrowRight") { e.preventDefault(); $("#next").click(); }
-  if (e.key === "ArrowUp" || e.key === "ArrowLeft") { e.preventDefault(); $("#prev").click(); }
-});
 
 $("#script").addEventListener("click", e => {
   const w = e.target.closest(".w");
-  if (w) { e.stopPropagation(); openWord(w.dataset.w); return; }
-  const ln = e.target.closest(".ln");
-  const c = e.target.closest(".cue");
-  const hidden = c && c.classList.contains("mine") && document.body.classList.contains("cuemode") && !c.classList.contains("reveal");
-  if (ln && e.target.closest(".say") && !hidden) sayLine(ln);
-  if (c) {
-    const i = +c.dataset.i;
-    if (c.classList.contains("mine") && document.body.classList.contains("cuemode")) c.classList.toggle("reveal");
-    setCur(i, false);
-  }
+  if (w) { openWord(w.dataset.w); return; }
+  const say = e.target.closest(".say");
+  if (say) { sayLine(say.closest(".ln")); return; }
+  const j = e.target.closest(".jump");
+  if (j) setCur(+j.closest(".cue").dataset.i, false);
 });
 
-// Cue mode
-function setCueMode(on){
-  document.body.classList.toggle("cuemode", on);
-  $("#btnCue").setAttribute("aria-pressed", on ? "true" : "false");
-  cueEls.forEach(el => el.classList.remove("reveal"));
-}
-$("#btnCue").addEventListener("click", () => {
-  if (!role) { toast("請先在上方選你的角色"); return; }
-  setCueMode(!document.body.classList.contains("cuemode"));
-});
-
-// Chinese translation
+// Chinese
 function setZh(on){ document.body.classList.toggle("zhon", on); $("#btnZh").setAttribute("aria-pressed", on ? "true" : "false"); store.set("zh", on); }
 $("#btnZh").addEventListener("click", () => setZh(!document.body.classList.contains("zhon")));
 
 // Font size
-function applyFs(){ document.documentElement.style.setProperty("--fs", fs + "px"); store.set("fs", fs); }
-$("#btnSmaller").addEventListener("click", () => { fs = Math.max(14, fs - 2); applyFs(); });
-$("#btnBigger").addEventListener("click", () => { fs = Math.min(30, fs + 2); applyFs(); });
+function applySize(){ document.documentElement.style.setProperty("--fs", SIZES[size][1] + "px"); $("#btnSize").setAttribute("aria-label", "字級：" + SIZES[size][0]); store.set("size", size); }
+$("#btnSize").addEventListener("click", () => {
+  openSheet(`<div class="grab"></div>
+    <div class="shead"><h3>字級</h3><button type="button" class="x" aria-label="關閉">✕</button></div>
+    <div class="sizes">${SIZES.map(([n, px], i) => `<button type="button" data-size="${i}" aria-pressed="${i === size}" style="font-size:${px}px">${n}</button>`).join("")}</div>`);
+});
 
 // Speech
 let voices = [];
@@ -433,62 +429,69 @@ function loadVoices(){ try{ voices = speechSynthesis.getVoices(); }catch(e){} }
 if ("speechSynthesis" in window) { loadVoices(); speechSynthesis.onvoiceschanged = loadVoices; }
 function pickVoice(){
   const en = voices.filter(v => /^en[-_]US/i.test(v.lang));
-  const pref = en.find(v => /Samantha|Google US English|Aria|Jenny|Ava|Allison/i.test(v.name));
-  return pref || en[0] || voices.find(v => /^en/i.test(v.lang)) || null;
+  return en.find(v => /Samantha|Google US English|Aria|Jenny|Ava|Allison/i.test(v.name)) || en[0] || voices.find(v => /^en/i.test(v.lang)) || null;
 }
-function speak(text, rate, done){
-  if (!("speechSynthesis" in window)) { toast("這個瀏覽器不支援發音，請改用 Chrome 或 Safari"); return; }
+function clearPlaying(){ document.querySelectorAll(".ln.playing").forEach(x => x.classList.remove("playing")); }
+function speak(text, done){
+  if (!("speechSynthesis" in window)) { toast("這個瀏覽器不支援發音，請改用 Chrome 或 Safari"); if (done) done(); return; }
   try{
     speechSynthesis.cancel();
     const u = new SpeechSynthesisUtterance(text);
-    u.lang = "en-US"; u.rate = rate;
+    u.lang = "en-US"; u.rate = 0.9;
     const v = pickVoice(); if (v) u.voice = v;
     if (done) { u.onend = done; u.onerror = done; }
     speechSynthesis.speak(u);
-  }catch(e){ toast("發音失敗，請再點一次"); }
+  }catch(e){ toast("沒有聲音，請再點一次"); if (done) done(); }
 }
-
 function sayLine(ln){
-  document.querySelectorAll(".ln.playing").forEach(x => x.classList.remove("playing"));
+  const was = ln.classList.contains("playing");
+  clearPlaying();
+  if (was) { try{ speechSynthesis.cancel(); }catch(e){} return; }
   ln.classList.add("playing");
-  speak(SAY[+ln.dataset.l], 0.9, () => ln.classList.remove("playing"));
+  speak(SAY[+ln.dataset.l], () => ln.classList.remove("playing"));
 }
 
 // Sheets
+let lastFocus = null;
 function openSheet(content){
+  lastFocus = document.activeElement;
+  clearPlaying();
   $("#sheetBody").innerHTML = content;
   document.body.classList.add("open");
   $("#sheet").classList.add("show");
-  const x = $("#sheet .x"); if (x) x.focus();
+  const x = $("#sheet .x"); if (x) x.focus({ preventScroll: true });
 }
 function closeSheet(){
   document.body.classList.remove("open");
   $("#sheet").classList.remove("show");
-  try{ speechSynthesis.cancel(); }catch(e){}
+  if (lastFocus && lastFocus.focus) lastFocus.focus({ preventScroll: true });
 }
 $("#scrim").addEventListener("click", closeSheet);
+document.addEventListener("keydown", e => { if (e.key === "Escape" && document.body.classList.contains("open")) closeSheet(); });
 $("#sheet").addEventListener("click", e => {
   if (e.target.closest(".x")) { closeSheet(); return; }
+  const r = e.target.closest("[data-role]");
+  if (r) { role = r.dataset.role; store.set("role", role); applyRole(); closeSheet(); toast(role ? `${ROLES[role][0]} 的台詞會亮起來` : "顯示全部角色"); return; }
+  const z = e.target.closest("[data-size]");
+  if (z) { size = +z.dataset.size; applySize(); closeSheet(); return; }
   const b = e.target.closest("[data-say]");
-  if (b) speak(b.dataset.say, +b.dataset.rate);
+  if (b) speak(b.dataset.say);
 });
 
 function openWord(key){
   const w = dict[key]; if (!w) return;
-  openSheet(`
-    <div class="row1"><div><div class="word">${w[0]}</div><div class="ipa">${w[1]}</div></div>
+  openSheet(`<div class="grab"></div>
+    <div class="shead"><div><div class="word">${w[0]}</div><div class="ipa">${w[1]}</div></div>
       <button type="button" class="x" aria-label="關閉">✕</button></div>
     <div class="mean">${w[2]}</div>
-    <div class="play">
-      <button type="button" data-say="${w[0]}" data-rate="0.9">▶ 再聽一次</button>
-    </div>`);
-  speak(w[0], 0.9);
+    <button type="button" class="big" data-say="${w[0]}">▶ 再聽一次</button>`);
+  speak(w[0]);
 }
 $("#btnList").addEventListener("click", () => {
-  openSheet(`
-    <div class="row1 list"><h3>難字表（${WORDS.length} 個）</h3><button type="button" class="x" aria-label="關閉">✕</button></div>
-    <div class="list"><ul>${WORDS.map(w => `<li><div><strong>${w[0]}</strong><small>${w[1]}　${w[2]}</small></div>
-      <button type="button" data-say="${w[0]}" data-rate="0.9" aria-label="播放 ${w[0]}">▶</button></li>`).join("")}</ul></div>`);
+  openSheet(`<div class="grab"></div>
+    <div class="shead"><h3>難字表（${WORDS.length} 個）</h3><button type="button" class="x" aria-label="關閉">✕</button></div>
+    <ul class="list">${WORDS.map(w => `<li><div><strong>${w[0]}</strong><small>${w[1]}　${w[2]}</small></div>
+      <button type="button" class="say" data-say="${w[0]}" aria-label="播放 ${w[0]}">${SPK}</button></li>`).join("")}</ul>`);
 });
 
 // Keep the screen on while rehearsing, where the browser allows it
@@ -499,9 +502,9 @@ async function keepAwake(){
 }
 
 let tt;
-function toast(msg){ const t = $("#toast"); t.textContent = msg; t.classList.add("show"); clearTimeout(tt); tt = setTimeout(() => t.classList.remove("show"), 2200); }
+function toast(msg){ const t = $("#toast"); t.textContent = msg; t.classList.add("show"); clearTimeout(tt); tt = setTimeout(() => t.classList.remove("show"), 2000); }
 
-applyFs();
+applySize();
 setZh(store.get("zh", false));
 applyRole();
 </script>
