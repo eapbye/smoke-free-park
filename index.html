@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>公園無菸大作戰 劇本</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Fraunces:opsz,wght@9..144,600;9..144,700&display=swap" rel="stylesheet">
+<style>
+/* Layout: sticky header with role chips, single readable script column, fixed progress bar at the bottom. */
+:root{
+  --paper:#f4f7f2;
+  --surface:#ffffff;
+  --ink:#1b231f;
+  --muted:#626e67;
+  --line:#dce3d9;
+  --accent:#2d6a4c;
+  --accent-soft:#e2eee6;
+  --now:#fff0bd;
+  --display:"Fraunces", Georgia, "Times New Roman", serif;
+  --body:"Atkinson Hyperlegible", system-ui, -apple-system, "PingFang TC", "Noto Sans TC", "Microsoft JhengHei", sans-serif;
+  --fs:18px;
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --paper:#111613; --surface:#18201b; --ink:#e5ebe6; --muted:#97a49c; --line:#2a332e;
+    --accent:#7cc39d; --accent-soft:#1d3127; --now:#3a3317; color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#111613; --surface:#18201b; --ink:#e5ebe6; --muted:#97a49c; --line:#2a332e;
+  --accent:#7cc39d; --accent-soft:#1d3127; --now:#3a3317; color-scheme:dark;
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--paper);color:var(--ink);font-family:var(--body);line-height:1.5;-webkit-text-size-adjust:100%}
+button{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+header{position:sticky;top:0;z-index:5;background:var(--paper);border-bottom:1px solid var(--line);
+  padding:calc(10px + env(safe-area-inset-top)) max(16px, env(safe-area-inset-right)) 10px max(16px, env(safe-area-inset-left))}
+.wrap{max-width:720px;margin:0 auto}
+.title{display:flex;align-items:baseline;justify-content:space-between;gap:12px;flex-wrap:wrap}
+h1{font-family:var(--display);font-size:1.35rem;margin:0;text-wrap:balance;letter-spacing:.01em}
+.sub{color:var(--muted);font-size:.85rem}
+.chips{display:flex;gap:6px;overflow-x:auto;padding:10px 0 4px;scrollbar-width:none}
+.chips::-webkit-scrollbar{display:none}
+.chip{flex:none;display:flex;align-items:center;gap:6px;border:1px solid var(--line);background:var(--surface);
+  border-radius:999px;padding:6px 12px;font-size:.88rem;cursor:pointer;white-space:nowrap}
+.chip i{width:9px;height:9px;border-radius:50%;background:var(--c)}
+.chip[aria-pressed="true"]{border-color:var(--accent);background:var(--accent-soft);font-weight:700}
+.tools{display:flex;gap:6px;flex-wrap:wrap;padding-top:6px}
+.tool{border:1px solid var(--line);background:var(--surface);border-radius:8px;padding:5px 10px;font-size:.85rem;cursor:pointer}
+.tool[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--paper)}
+
+main{padding:16px max(16px, env(safe-area-inset-right)) 120px max(16px, env(safe-area-inset-left))}
+.howto{font-size:.88rem;color:var(--muted);background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:10px 12px;margin-bottom:8px}
+.howto b{color:var(--ink)}
+
+.scene{margin:28px 0 10px;display:flex;flex-direction:column;gap:2px}
+.scene .no{font-size:.75rem;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);font-weight:700}
+.scene h2{font-family:var(--display);font-size:1.2rem;margin:0;text-wrap:balance}
+.scene .zh{color:var(--muted);font-size:.9rem}
+.dir{color:var(--muted);font-size:.88rem;margin:8px 0 8px 14px;padding-left:10px;border-left:2px dashed var(--line)}
+
+.cue{position:relative;background:var(--surface);border:1px solid var(--line);border-left:5px solid var(--c);
+  border-radius:10px;padding:8px 12px 10px;margin:8px 0;cursor:pointer;transition:opacity .2s, background-color .2s}
+.who{display:flex;align-items:center;gap:8px;font-size:.8rem;color:var(--muted)}
+.who strong{color:var(--ink);font-size:.9rem}
+.ln{margin:4px 0;font-size:var(--fs);line-height:1.45}
+.ln{display:flex;align-items:flex-start;gap:8px}
+.ln .txt{flex:1;min-width:0}
+.ln .hint{display:none}
+.tr{display:none;font-size:calc(var(--fs) * .8);color:var(--muted);font-weight:400;margin-top:1px}
+body.zhon .tr{display:block}
+.say{flex:none;width:30px;height:30px;margin-top:1px;border-radius:50%;border:1px solid var(--line);background:var(--paper);color:var(--accent);cursor:pointer;display:grid;place-items:center;padding:0}
+.say svg{width:15px;height:15px}
+.ln.playing .say{background:var(--accent);color:var(--paper);border-color:var(--accent)}
+body.dimming .cue:not(.mine){opacity:.5}
+.cue.mine{background:color-mix(in srgb, var(--c) 10%, var(--surface));box-shadow:0 0 0 1px var(--c) inset}
+.cue.mine .ln{font-weight:700}
+.cue.now{background:var(--now);opacity:1 !important;box-shadow:0 0 0 2px var(--accent)}
+.tag{display:none;margin-left:auto;font-size:.72rem;font-weight:700;color:var(--accent);border:1px solid var(--accent);border-radius:999px;padding:0 8px}
+.cue.before .tag{display:inline-block}
+body.cuemode .cue.mine:not(.reveal) .ln .full{display:none}
+body.cuemode .cue.mine:not(.reveal) .ln .hint{display:inline;color:var(--muted)}
+body.cuemode .cue.mine:not(.reveal) .tr{display:none}
+.end{text-align:center;font-family:var(--display);font-size:1.1rem;color:var(--muted);margin:28px 0}
+
+.w{all:unset;cursor:pointer;border-bottom:2px dotted var(--accent);color:inherit;font-weight:inherit}
+.w:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
+
+.bar{position:fixed;left:0;right:0;bottom:0;z-index:6;background:var(--surface);border-top:1px solid var(--line);
+  padding:8px max(12px, env(safe-area-inset-right)) calc(8px + env(safe-area-inset-bottom)) max(12px, env(safe-area-inset-left))}
+.bar .wrap{display:flex;align-items:center;gap:10px}
+.nav{flex:none;width:52px;height:44px;border-radius:10px;border:1px solid var(--line);background:var(--paper);font-size:1.1rem;cursor:pointer}
+.nav.next{background:var(--accent);border-color:var(--accent);color:var(--paper)}
+.status{flex:1;text-align:center;font-size:.85rem;line-height:1.3;font-variant-numeric:tabular-nums}
+.status b{display:block;font-size:.95rem}
+
+.scrim{position:fixed;inset:0;background:rgba(0,0,0,.35);z-index:9;display:none}
+.sheet{position:fixed;left:0;right:0;bottom:0;z-index:10;background:var(--surface);border-radius:16px 16px 0 0;
+  border-top:1px solid var(--line);padding:16px max(16px, env(safe-area-inset-right)) calc(18px + env(safe-area-inset-bottom)) max(16px, env(safe-area-inset-left));
+  transform:translateY(105%);transition:transform .22s ease;max-height:80vh;overflow-y:auto}
+.open .scrim{display:block}
+.sheet.show{transform:none}
+.sheet .wrap{display:flex;flex-direction:column;gap:10px}
+.sheet .row1{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
+.word{font-size:1.6rem;font-weight:700;line-height:1.2}
+.ipa{color:var(--muted);font-size:1rem}
+.mean{font-size:1.05rem}
+.play{display:flex;gap:8px}
+.play button{flex:1;height:46px;border-radius:10px;border:1px solid var(--accent);background:var(--accent);color:var(--paper);font-weight:700;cursor:pointer}
+.x{border:none;background:none;font-size:1.4rem;line-height:1;padding:4px 6px;cursor:pointer;color:var(--muted)}
+.list h3{margin:0;font-family:var(--display);font-size:1.15rem}
+.list ul{list-style:none;margin:0;padding:0}
+.list li{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--line)}
+.list li div{flex:1;min-width:0}
+.list li small{color:var(--muted);display:block}
+.list li button{flex:none;width:40px;height:36px;border-radius:8px;border:1px solid var(--line);background:var(--paper);cursor:pointer}
+
+.toast{position:fixed;left:50%;bottom:90px;transform:translateX(-50%);background:var(--ink);color:var(--paper);
+  padding:8px 14px;border-radius:999px;font-size:.85rem;z-index:20;opacity:0;pointer-events:none;transition:opacity .2s}
+.toast.show{opacity:1}
+@media (prefers-reduced-motion: reduce){ .sheet,.cue,.toast{transition:none} }
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap">
+    <div class="title">
+      <h1>公園無菸大作戰</h1>
+      <span class="sub">Once Upon a Smoke-Free Park</span>
+    </div>
+    <div class="chips" id="chips" role="group" aria-label="選擇我的角色"></div>
+    <div class="tools">
+      <button class="tool" id="btnZh" type="button" aria-pressed="false">中文翻譯</button>
+      <button class="tool" id="btnList" type="button">難字表</button>
+      <button class="tool" id="btnCue" type="button" aria-pressed="false">提詞模式</button>
+      <button class="tool" id="btnSmaller" type="button" aria-label="字體縮小">A−</button>
+      <button class="tool" id="btnBigger" type="button" aria-label="字體放大">A+</button>
+    </div>
+  </div>
+</header>
+
+<main>
+  <div class="wrap">
+    <p class="howto"><b>怎麼用：</b>點每句右邊的喇叭可以聽整句，點有虛線底線的難字可以看音標和中文；上方「中文翻譯」可以在每句英文下面顯示中文；上方選你的角色，你的台詞會亮起來；排練時點任一句或用下方按鈕跟著進度走。開啟「提詞模式」後，你的台詞只剩每句開頭，點一下就能看全句。</p>
+    <div id="script"></div>
+    <p class="end">The End!</p>
+  </div>
+</main>
+
+<div class="bar">
+  <div class="wrap">
+    <button class="nav" id="prev" type="button" aria-label="上一句">◀</button>
+    <div class="status" id="status" aria-live="polite"></div>
+    <button class="nav next" id="next" type="button" aria-label="下一句">▶</button>
+  </div>
+</div>
+
+<div class="scrim" id="scrim"></div>
+<div class="sheet" id="sheet" role="dialog" aria-modal="true" aria-label="單字發音"><div class="wrap" id="sheetBody"></div></div>
+<div class="toast" id="toast"></div>
+
+<script>
+const ROLES = {
+  N:   ["旁白", "Narrator", "#6b7280"],
+  SW:  ["白雪公主", "Snow White", "#d4a017"],
+  RR:  ["小紅帽", "Little Red Riding Hood", "#d1453b"],
+  W:   ["大野狼", "Big Bad Wolf", "#8a6a46"],
+  H:   ["衛生局人員", "Health Officer", "#1f9e89"],
+  P:   ["警察", "Police Officer", "#3b5bdb"],
+  D:   ["區公所人員", "District Office Staff", "#8b5cf6"],
+  C:   ["灰姑娘", "Cinderella", "#d0659a"],
+  ALL: ["全體", "Everyone together", "var(--accent)"]
+};
+
+const RAW = `
+# Scene 1 | A Beautiful Park | 美麗的公園
+~ 白雪公主、小紅帽、灰姑娘在公園散步，大野狼偷偷走進來。
+N: Once upon a time, there was a beautiful park. = 很久很久以前，有一座美麗的公園。 | Everyone loved this park. = 大家都很喜歡這座公園。 | One day, three fairy tale friends came here. = 有一天，三位童話朋友來到這裡。 | But something unusual happened! = 但是，不尋常的事情發生了！
+~ 大野狼從口袋拿出香菸，做出抽菸動作。
+W: Ha! Ha! = 哈！哈！ | Nice day for a smoke! = 真是適合抽根菸的好天氣！
+SW: Oh, no! Mr. Wolf! = 噢，不！大野狼先生！ | Look at the sign! = 你看那個告示牌！ | No smoking here! = 這裡禁止吸菸！
+W: No smoking? = 禁止吸菸？ | But I am the Big Bad Wolf! = 但我可是大野狼耶！
+~ 做出吹氣動作
+RR: Excuse me! = 不好意思！ | Your smoke is going into my basket! = 你的菸都飄進我的籃子裡了！ | These cookies are for my grandmother. = 這些餅乾是要給我奶奶的。 | She doesn't like secondhand smoke! = 她不喜歡二手菸！
+C: Oh, no! = 噢，不！ | My beautiful dress smells like smoke! = 我美麗的禮服都是菸味！ | I just washed it! = 我才剛洗好耶！ | I have to wear it to the ball tonight! = 我今晚還要穿它去參加舞會！
+W: Relax, ladies! = 放輕鬆，女士們！ | I am just a smoking wolf! = 我只是一隻愛抽菸的狼！
+RR: Mr. Wolf, what big smoke you have! = 大野狼先生，你的菸怎麼這麼大！
+SW: A smoking wolf is still a bad wolf! = 愛抽菸的狼還是壞狼！
+# Scene 2 | Call the Government! | 召喚公務機關
+N: Our three friends did not give up. = 三位朋友沒有放棄。 | They knew who could help them. = 她們知道誰能幫忙。
+RR: This is serious! = 這件事很嚴重！ | Let's call the government! = 我們打電話找政府吧！
+SW: Good idea! = 好主意！ | We need help from the District Office and the Health Department! = 我們需要區公所和衛生局來幫忙！
+~ 灰姑娘拿起手機假裝打電話。
+C: Hello! District Office? = 喂！是區公所嗎？ | There is a smoking problem in the park. = 公園裡有人抽菸。 | Please come and help us! = 請來幫幫我們！ | Before midnight, please! = 拜託在午夜十二點前到！
+~ 區公所人員上場。
+D: Hello, everyone! = 大家好！ | I am from the District Office. = 我是區公所的人員。 | What happened here? = 這裡發生什麼事了？
+SW: That wolf is smoking in the no-smoking area! = 那隻狼在禁菸區抽菸！
+D: I see. = 我了解了。 | This park has a no-smoking area. = 這座公園有劃設禁菸區。 | We have signs here. = 這裡都有告示牌。 | I will contact the Health Department. = 我會聯絡衛生局。
+W: Why do you call so many people? = 你們幹嘛找這麼多人來？ | I only have one cigarette! = 我只有一根菸而已！
+D: Because public service is teamwork! = 因為公共服務就是團隊合作！ | One problem, many departments! = 一個問題，很多機關一起處理！
+~ 衛生局人員上場。
+H: Good afternoon! = 午安！ | I am from the Health Department. = 我是衛生局的人員。 | Who is smoking here? = 是誰在這裡抽菸？
+W: Not me! = 不是我！ | Maybe the wind is smoking! = 可能是風在抽菸吧！
+RR: The wind can't smoke! = 風才不會抽菸！ | I saw you with my own eyes! = 我親眼看到是你！
+H: Sir, please put out your cigarette. = 先生，請把菸熄掉。 | This is a designated no-smoking area. = 這裡是公告的禁菸區。 | And yes, rules apply to wolves, too! = 還有，沒錯，規定對狼一樣適用！
+# Scene 3 | The Police Arrive | 警察來了
+N: Just then, we heard a siren! = 就在這時，警笛聲響起！
+~ 警察帥氣登場，可以搭配警笛音效。
+P: Stop! = 不要動！ | Police! = 警察！ | Someone reported a smoking wolf. = 有人通報一隻狼在抽菸。 | What is happening here? = 這裡發生什麼事？
+W: Oh, no! Police! = 噢，不！是警察！ | I am innocent! = 我是無辜的！
+RR: Innocent? = 無辜？ | You made the air smoky! = 你把空氣弄得都是菸！ | Cough! Cough! = 咳！咳！
+P: Please calm down. = 大家請冷靜。 | We are here to keep everyone safe. = 我們來這裡是為了維護大家的安全。 | Sir, please cooperate with the Health Department. = 先生，請配合衛生局處理。
+H: Thank you, Officer. = 謝謝警官。 | Sir, please show us your identification. = 先生，請出示您的身分證件。 | We must follow the proper procedure. = 我們必須依照正當程序辦理。
+W: Identification? = 身分證件？ | I only have my wolf ID! = 我只有狼的身分證！
+~ 大野狼拿出一張假身分證。
+P: A wolf ID? = 狼的身分證？ | That's interesting! = 真有意思！ | The photo looks like a dog. = 照片看起來像一隻狗。 | But we still need to confirm your identity. = 但我們還是得確認你的身分。
+SW: Officer, my magic mirror says he is the Big Bad Wolf! = 警官，我的魔鏡說他就是大野狼！
+D: Let's work together. = 我們一起合作吧。 | The District Office manages the park. = 區公所負責管理公園。 | The Health Department handles smoking control. = 衛生局負責菸害管制。 | The Police help maintain public order. = 警察協助維持公共秩序。
+C: Wow! = 哇！ | Government teamwork is like magic! = 政府的團隊合作就像魔法一樣！ | It's even better than my fairy godmother! = 比我的神仙教母還厲害！
+SW: Yes! = 沒錯！ | But this is not a fairy tale. = 但這不是童話故事。 | We need real action! = 我們需要真正的行動！
+# Scene 4 | The Lesson | 違規者的覺醒
+H: Sir, your behavior may violate the Tobacco Hazards Prevention Act. = 先生，您的行為可能違反《菸害防制法》。 | If a violation is confirmed, you may be fined according to the law. = 如果確認違規，將依法處以罰鍰。
+W: A fine? = 罰錢？ | How much? = 要罰多少？
+P: That depends on the law, not on your tail! = 那要看法律怎麼規定，不是看你的尾巴！
+RR: See, Mr. Wolf? = 看吧，大野狼先生？ | Please protect children and older people from secondhand smoke. = 請保護兒童和長輩，別讓他們吸到二手菸。 | Like my grandmother! = 就像我奶奶！
+D: We will also put up bigger signs in the park. = 我們也會在公園裡設置更大的告示牌。
+C: And I will help spread the message! = 我也會幫忙宣導！ | I'll post it online! = 我要把它 po 上網！ | A clean park makes everyone happy! = 乾淨的公園讓大家都開心！
+P: Remember! = 記住！ | Follow the rules and respect others. = 遵守規定，尊重他人。 | That's how we keep the park safe. = 這樣才能讓公園保持安全。
+SW: A beautiful park needs everyone's help! = 美麗的公園需要大家一起守護！
+# Scene 5 | Happy Ending | 童話大結局
+N: And so, the park became beautiful again. = 就這樣，公園又恢復了美麗。 | The government worked together. = 政府機關攜手合作。 | The citizens learned to respect the rules. = 市民學會了尊重規定。 | And the Big Bad Wolf made a big change! = 而大野狼也有了很大的改變！
+W: Sorry, everyone! = 對不起，各位！ | I will blow away... = 我要吹走的…… | NOT the people... = 不是人…… | BUT the smoke! = 而是菸！
+~ 大野狼做出吹走煙霧的動作，接著丟掉假香菸。
+SW: No smoking! = 禁止吸菸！
+RR: No secondhand smoke! = 拒絕二手菸！
+C: Clean air! = 清新空氣！
+D: Good public service! = 優質公共服務！
+P: Good cooperation! = 良好合作！
+H: A smoke-free environment! = 無菸環境！
+ALL: One park! One team! = 一座公園！一個團隊！ | Let's keep our park clean! = 一起讓公園保持乾淨！ | Let's keep our air fresh! = 一起讓空氣保持清新！ | Together, we make a better Taiwan! = 攜手打造更好的台灣！
+`;
+
+// Hard words only: [phrase as it appears, IPA (US), 中文]
+const WORDS = [
+  ["fairy tale", "/ˈferi ˌteɪl/", "童話"],
+  ["unusual", "/ʌnˈjuːʒuəl/", "不尋常的"],
+  ["grandmother", "/ˈɡrænˌmʌðər/", "奶奶、外婆"],
+  ["secondhand smoke", "/ˌsekəndˈhænd smoʊk/", "二手菸"],
+  ["serious", "/ˈsɪriəs/", "嚴重的"],
+  ["government", "/ˈɡʌvərnmənt/", "政府"],
+  ["District Office", "/ˈdɪstrɪkt ˈɔːfɪs/", "區公所"],
+  ["Health Department", "/helθ dɪˈpɑːrtmənt/", "衛生局"],
+  ["departments", "/dɪˈpɑːrtmənts/", "部門、機關"],
+  ["cigarette", "/ˌsɪɡəˈret/", "香菸"],
+  ["put out", "/ˌpʊt ˈaʊt/", "熄滅（菸）"],
+  ["designated", "/ˈdezɪɡneɪtɪd/", "指定的"],
+  ["apply", "/əˈplaɪ/", "適用"],
+  ["innocent", "/ˈɪnəsənt/", "無辜的"],
+  ["cooperate", "/koʊˈɑːpəreɪt/", "配合、合作"],
+  ["Officer", "/ˈɔːfɪsər/", "警官、官員"],
+  ["reported", "/rɪˈpɔːrtɪd/", "通報、檢舉"],
+  ["cough", "/kɔːf/", "咳嗽"],
+  ["fairy godmother", "/ˈferi ˈɡɑːdˌmʌðər/", "神仙教母"],
+  ["identification", "/aɪˌdentɪfɪˈkeɪʃən/", "身分證件"],
+  ["procedure", "/prəˈsiːdʒər/", "程序"],
+  ["confirm", "/kənˈfɜːrm/", "確認"],
+  ["identity", "/aɪˈdentəti/", "身分"],
+  ["handles", "/ˈhændəlz/", "負責處理"],
+  ["maintain", "/meɪnˈteɪn/", "維持"],
+  ["public order", "/ˌpʌblɪk ˈɔːrdər/", "公共秩序"],
+  ["behavior", "/bɪˈheɪvjər/", "行為"],
+  ["violate", "/ˈvaɪəleɪt/", "違反"],
+  ["Tobacco Hazards Prevention Act", "/təˈbækoʊ ˈhæzərdz prɪˈvenʃən ˌækt/", "菸害防制法"],
+  ["according to the law", "/əˈkɔːrdɪŋ tə ðə ˈlɔː/", "依法"],
+  ["violation", "/ˌvaɪəˈleɪʃən/", "違規行為"],
+  ["fined", "/faɪnd/", "被罰款"],
+  ["spread the message", "/ˌspred ðə ˈmesɪdʒ/", "傳遞訊息、宣導"],
+  ["citizens", "/ˈsɪtɪzənz/", "市民"],
+  ["cooperation", "/koʊˌɑːpəˈreɪʃən/", "合作"],
+  ["smoke-free", "/ˌsmoʊk ˈfriː/", "無菸的"],
+  ["environment", "/ɪnˈvaɪrənmənt/", "環境"]
+];
+
+const $ = s => document.querySelector(s);
+const store = {
+  get(k, d){ try{ const v = localStorage.getItem("smokefree." + k); return v === null ? d : JSON.parse(v); }catch(e){ return d; } },
+  set(k, v){ try{ localStorage.setItem("smokefree." + k, JSON.stringify(v)); }catch(e){} }
+};
+
+const dict = {};
+WORDS.forEach(w => dict[w[0].toLowerCase()] = w);
+const esc = s => s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+const wordRe = new RegExp("\\b(" + WORDS.map(w => w[0]).sort((a, b) => b.length - a.length).map(esc).join("|") + ")\\b", "gi");
+const html = s => s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+const mark = s => html(s).replace(wordRe, m => `<button type="button" class="w" data-w="${m.toLowerCase()}">${m}</button>`);
+const hint = s => { const p = s.split(" "); return p.length > 3 ? p.slice(0, 3).join(" ") + " …" : s; };
+
+// Parse and render
+const cues = [];
+const SAY = [];
+const SPK = '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9H4zm12.5 3a4.5 4.5 0 0 0-2.5-4v8a4.5 4.5 0 0 0 2.5-4zM14 3.2v2.1a7 7 0 0 1 0 13.4v2.1a9 9 0 0 0 0-17.6z"/></svg>';
+let out = "", sceneName = "";
+RAW.trim().split("\n").forEach(line => {
+  line = line.trim();
+  if (!line) return;
+  if (line[0] === "#") {
+    const [no, en, zh] = line.slice(1).split("|").map(s => s.trim());
+    sceneName = no;
+    out += `<div class="scene"><span class="no">${no}</span><h2>${en}</h2><span class="zh">${zh}</span></div>`;
+  } else if (line[0] === "~") {
+    out += `<p class="dir">（${html(line.slice(1).trim())}）</p>`;
+  } else {
+    const k = line.indexOf(":");
+    const role = line.slice(0, k).trim();
+    const lines = line.slice(k + 1).split("|").map(s => { const [en, zh] = s.split(" = "); return { en: en.trim(), zh: (zh || "").trim() }; });
+    const r = ROLES[role];
+    const i = cues.length;
+    cues.push({ role, scene: sceneName });
+    out += `<div class="cue" data-i="${i}" data-role="${role}" style="--c:${r[2]}">
+      <div class="who"><strong>${r[0]}</strong><span>${r[1]}</span><span class="tag">下一句換你</span></div>
+      ${lines.map(l => { const n = SAY.push(l.en) - 1; return `<div class="ln" data-l="${n}"><div class="txt"><span class="full">${mark(l.en)}</span><span class="hint">${html(hint(l.en))}</span><span class="tr">${html(l.zh)}</span></div><button type="button" class="say" aria-label="播放這一句">${SPK}</button></div>`; }).join("")}
+    </div>`;
+  }
+});
+$("#script").innerHTML = out;
+const cueEls = [...document.querySelectorAll(".cue")];
+
+// State
+let role = store.get("role", "");
+let cur = -1;
+let fs = store.get("fs", 18);
+if (!ROLES[role] || role === "ALL") role = "";
+
+// Role chips
+const chipData = [["", "全部看", "var(--muted)"]].concat(Object.keys(ROLES).filter(k => k !== "ALL").map(k => [k, ROLES[k][0], ROLES[k][2]]));
+$("#chips").innerHTML = chipData.map(([k, name, c]) => `<button type="button" class="chip" data-role="${k}" style="--c:${c}" aria-pressed="false"><i></i>${name}</button>`).join("");
+$("#chips").addEventListener("click", e => {
+  const b = e.target.closest(".chip"); if (!b) return;
+  role = b.dataset.role; store.set("role", role); applyRole();
+});
+
+function isMine(i){ const r = cues[i].role; return role && (r === role || r === "ALL"); }
+function applyRole(){
+  document.querySelectorAll(".chip").forEach(c => c.setAttribute("aria-pressed", c.dataset.role === role ? "true" : "false"));
+  document.body.classList.toggle("dimming", !!role);
+  cueEls.forEach((el, i) => {
+    el.classList.toggle("mine", isMine(i));
+    el.classList.toggle("before", !!role && !isMine(i) && i + 1 < cues.length && isMine(i + 1));
+    el.classList.remove("reveal");
+  });
+  if (!role && document.body.classList.contains("cuemode")) setCueMode(false);
+  updateStatus();
+}
+
+// Progress
+function setCur(i, scroll){
+  if (i < 0 || i >= cues.length) return;
+  if (cur >= 0) cueEls[cur].classList.remove("now");
+  cur = i;
+  const el = cueEls[cur];
+  el.classList.add("now");
+  if (scroll) {
+    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    el.scrollIntoView({ block: "center", behavior: reduce ? "auto" : "smooth" });
+  }
+  updateStatus();
+  keepAwake();
+}
+function updateStatus(){
+  const s = $("#status");
+  if (cur < 0) { s.innerHTML = `<b>還沒開始</b>按 ▶ 從第一句開始排練`; return; }
+  let extra = "";
+  if (role) {
+    if (isMine(cur)) extra = "輪到你了";
+    else {
+      let j = cur + 1; while (j < cues.length && !isMine(j)) j++;
+      extra = j < cues.length ? `再 ${j - cur} 句換你` : "你的台詞已經結束";
+    }
+  }
+  s.innerHTML = `<b>${cues[cur].scene} · 第 ${cur + 1} / ${cues.length} 句</b>${extra || ROLES[cues[cur].role][0]}`;
+}
+$("#next").addEventListener("click", () => setCur(cur < 0 ? 0 : cur + 1, true));
+$("#prev").addEventListener("click", () => setCur(Math.max(0, cur - 1), true));
+document.addEventListener("keydown", e => {
+  if (document.body.classList.contains("open")) { if (e.key === "Escape") closeSheet(); return; }
+  if (e.key === "ArrowDown" || e.key === "ArrowRight") { e.preventDefault(); $("#next").click(); }
+  if (e.key === "ArrowUp" || e.key === "ArrowLeft") { e.preventDefault(); $("#prev").click(); }
+});
+
+$("#script").addEventListener("click", e => {
+  const w = e.target.closest(".w");
+  if (w) { e.stopPropagation(); openWord(w.dataset.w); return; }
+  const ln = e.target.closest(".ln");
+  const c = e.target.closest(".cue");
+  const hidden = c && c.classList.contains("mine") && document.body.classList.contains("cuemode") && !c.classList.contains("reveal");
+  if (ln && e.target.closest(".say") && !hidden) sayLine(ln);
+  if (c) {
+    const i = +c.dataset.i;
+    if (c.classList.contains("mine") && document.body.classList.contains("cuemode")) c.classList.toggle("reveal");
+    setCur(i, false);
+  }
+});
+
+// Cue mode
+function setCueMode(on){
+  document.body.classList.toggle("cuemode", on);
+  $("#btnCue").setAttribute("aria-pressed", on ? "true" : "false");
+  cueEls.forEach(el => el.classList.remove("reveal"));
+}
+$("#btnCue").addEventListener("click", () => {
+  if (!role) { toast("請先在上方選你的角色"); return; }
+  setCueMode(!document.body.classList.contains("cuemode"));
+});
+
+// Chinese translation
+function setZh(on){ document.body.classList.toggle("zhon", on); $("#btnZh").setAttribute("aria-pressed", on ? "true" : "false"); store.set("zh", on); }
+$("#btnZh").addEventListener("click", () => setZh(!document.body.classList.contains("zhon")));
+
+// Font size
+function applyFs(){ document.documentElement.style.setProperty("--fs", fs + "px"); store.set("fs", fs); }
+$("#btnSmaller").addEventListener("click", () => { fs = Math.max(14, fs - 2); applyFs(); });
+$("#btnBigger").addEventListener("click", () => { fs = Math.min(30, fs + 2); applyFs(); });
+
+// Speech
+let voices = [];
+function loadVoices(){ try{ voices = speechSynthesis.getVoices(); }catch(e){} }
+if ("speechSynthesis" in window) { loadVoices(); speechSynthesis.onvoiceschanged = loadVoices; }
+function pickVoice(){
+  const en = voices.filter(v => /^en[-_]US/i.test(v.lang));
+  const pref = en.find(v => /Samantha|Google US English|Aria|Jenny|Ava|Allison/i.test(v.name));
+  return pref || en[0] || voices.find(v => /^en/i.test(v.lang)) || null;
+}
+function speak(text, rate, done){
+  if (!("speechSynthesis" in window)) { toast("這個瀏覽器不支援發音，請改用 Chrome 或 Safari"); return; }
+  try{
+    speechSynthesis.cancel();
+    const u = new SpeechSynthesisUtterance(text);
+    u.lang = "en-US"; u.rate = rate;
+    const v = pickVoice(); if (v) u.voice = v;
+    if (done) { u.onend = done; u.onerror = done; }
+    speechSynthesis.speak(u);
+  }catch(e){ toast("發音失敗，請再點一次"); }
+}
+
+function sayLine(ln){
+  document.querySelectorAll(".ln.playing").forEach(x => x.classList.remove("playing"));
+  ln.classList.add("playing");
+  speak(SAY[+ln.dataset.l], 0.9, () => ln.classList.remove("playing"));
+}
+
+// Sheets
+function openSheet(content){
+  $("#sheetBody").innerHTML = content;
+  document.body.classList.add("open");
+  $("#sheet").classList.add("show");
+  const x = $("#sheet .x"); if (x) x.focus();
+}
+function closeSheet(){
+  document.body.classList.remove("open");
+  $("#sheet").classList.remove("show");
+  try{ speechSynthesis.cancel(); }catch(e){}
+}
+$("#scrim").addEventListener("click", closeSheet);
+$("#sheet").addEventListener("click", e => {
+  if (e.target.closest(".x")) { closeSheet(); return; }
+  const b = e.target.closest("[data-say]");
+  if (b) speak(b.dataset.say, +b.dataset.rate);
+});
+
+function openWord(key){
+  const w = dict[key]; if (!w) return;
+  openSheet(`
+    <div class="row1"><div><div class="word">${w[0]}</div><div class="ipa">${w[1]}</div></div>
+      <button type="button" class="x" aria-label="關閉">✕</button></div>
+    <div class="mean">${w[2]}</div>
+    <div class="play">
+      <button type="button" data-say="${w[0]}" data-rate="0.9">▶ 再聽一次</button>
+    </div>`);
+  speak(w[0], 0.9);
+}
+$("#btnList").addEventListener("click", () => {
+  openSheet(`
+    <div class="row1 list"><h3>難字表（${WORDS.length} 個）</h3><button type="button" class="x" aria-label="關閉">✕</button></div>
+    <div class="list"><ul>${WORDS.map(w => `<li><div><strong>${w[0]}</strong><small>${w[1]}　${w[2]}</small></div>
+      <button type="button" data-say="${w[0]}" data-rate="0.9" aria-label="播放 ${w[0]}">▶</button></li>`).join("")}</ul></div>`);
+});
+
+// Keep the screen on while rehearsing, where the browser allows it
+let lock = null;
+async function keepAwake(){
+  if (lock || !("wakeLock" in navigator)) return;
+  try{ lock = await navigator.wakeLock.request("screen"); lock.addEventListener("release", () => lock = null); }catch(e){}
+}
+
+let tt;
+function toast(msg){ const t = $("#toast"); t.textContent = msg; t.classList.add("show"); clearTimeout(tt); tt = setTimeout(() => t.classList.remove("show"), 2200); }
+
+applyFs();
+setZh(store.get("zh", false));
+applyRole();
+</script>
+</body>
+</html>
